@@ -8,6 +8,7 @@ public class InteractiveDoor : MonoBehaviour
     public float openSpeed = 2f;
     public float interactDistance = 3f;
     public Transform player;
+    //public CanvasGroup interactUI;
 
     private bool isOpen = false;
     private bool isMoving = false;
@@ -22,6 +23,13 @@ public class InteractiveDoor : MonoBehaviour
     {
         closedRotation = transform.rotation;
         targetRotation = closedRotation;
+
+        //if (interactUI != null)
+        //{
+        //    interactUI.alpha = 0f;
+        //    interactUI.interactable = false;
+        //    interactUI.blocksRaycasts = false;
+        //}
     }
 
     void Update()
@@ -33,7 +41,8 @@ public class InteractiveDoor : MonoBehaviour
         {
             if (!isNear)
             {
-                isNear = true;  
+                isNear = true;
+                //FadeUI(true);
             }
 
             if (Input.GetKeyDown(KeyCode.E))
@@ -52,6 +61,7 @@ public class InteractiveDoor : MonoBehaviour
             if (isNear)
             {
                 isNear = false;
+                //FadeUI(false);
             }
         }
     }
@@ -100,6 +110,32 @@ public class InteractiveDoor : MonoBehaviour
 
         isMoving = false;
     }
+
+    Coroutine fadeRoutine;
+
+    //void FadeUI(bool fadeIn)
+    //{
+    //    if (fadeRoutine != null)
+    //        StopCoroutine(fadeRoutine);
+
+    //    fadeRoutine = StartCoroutine(FadeCoroutine(fadeIn));
+    //}
+    //System.Collections.IEnumerator FadeCoroutine(bool fadeIn)
+    //{
+    //    float duration = 0.3f;
+    //    float startAlpha = interactUI.alpha;
+    //    float endAlpha = fadeIn ? 1f : 0f;
+    //    float elapsed = 0f;
+
+    //    while (elapsed < duration)
+    //    {
+    //        elapsed += Time.deltaTime;
+    //        interactUI.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
+    //        yield return null;
+    //    }
+
+    //    interactUI.alpha = endAlpha;
+    //}
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
