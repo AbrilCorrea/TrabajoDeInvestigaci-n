@@ -6,7 +6,7 @@ public class InteractNotes : MonoBehaviour
 {
     public float interactDistance = 3f;
     public Transform player;
-    public CanvasGroup interactUI;
+    //public CanvasGroup interactUI;
     public GameObject ImageCanvas;
 
     private bool isReading = false;
@@ -14,12 +14,12 @@ public class InteractNotes : MonoBehaviour
 
     private void Start()
     {
-        if (interactUI != null)
-        {
-            interactUI.alpha = 0f;
-            interactUI.interactable = false;
-            interactUI.blocksRaycasts = false;
-        }
+        //if (interactUI != null)
+        //{
+        //    interactUI.alpha = 0f;
+        //    interactUI.interactable = false;
+        //    interactUI.blocksRaycasts = false;
+        //}
 
         if (ImageCanvas != null)
             ImageCanvas.SetActive(false);
@@ -72,36 +72,36 @@ public class InteractNotes : MonoBehaviour
     void FadeUI(bool fadeIn)
     {
         StopAllCoroutines();
-        StartCoroutine(FadeCoroutine(fadeIn));
+        //StartCoroutine(FadeCoroutine(fadeIn));
     }
 
-    System.Collections.IEnumerator FadeCoroutine(bool fadeIn)
-    {
-        float duration = 0.3f;
-        float startAlpha = interactUI.alpha;
-        float endAlpha = fadeIn ? 1f : 0f;
-        float elapsed = 0f;
+    //System.Collections.IEnumerator FadeCoroutine(bool fadeIn)
+    //{
+    //    float duration = 0.3f;
+    //    float startAlpha = interactUI.alpha;
+    //    float endAlpha = fadeIn ? 1f : 0f;
+    //    float elapsed = 0f;
 
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            interactUI.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
-            yield return null;
-        }
+    //    while (elapsed < duration)
+    //    {
+    //        elapsed += Time.deltaTime;
+    //        interactUI.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
+    //        yield return null;
+    //    }
 
-        if (!fadeIn)
-        {
-            interactUI.interactable = false;
-            interactUI.blocksRaycasts = false;
-        }
-        else
-        {
-            interactUI.interactable = true;
-            interactUI.blocksRaycasts = true;
-        }
+    //    if (!fadeIn)
+    //    {
+    //        interactUI.interactable = false;
+    //        interactUI.blocksRaycasts = false;
+    //    }
+    //    else
+    //    {
+    //        interactUI.interactable = true;
+    //        interactUI.blocksRaycasts = true;
+    //    }
 
-        interactUI.alpha = endAlpha;
-    }
+    //    interactUI.alpha = endAlpha;
+    //}
 
     void OnDrawGizmosSelected()
     {
