@@ -18,6 +18,7 @@ public class InteractiveDoor : MonoBehaviour
     public AudioSource Sound;
 
     public Transform interactionOrigin;
+    public bool canInteract = true;
 
     void Start()
     {
@@ -34,6 +35,9 @@ public class InteractiveDoor : MonoBehaviour
 
     void Update()
     {
+        if (!canInteract)
+            return;
+
         Vector3 origin = interactionOrigin != null ? interactionOrigin.position : transform.position;
         float distance = Vector3.Distance(player.position, origin);
 
@@ -86,10 +90,7 @@ public class InteractiveDoor : MonoBehaviour
     public void CloseDoorExternally()
     {
         CloseDoor();
-        if (!isMoving)
-        {
-           
-        }
+     
     }
 
     System.Collections.IEnumerator MoveDoor()
