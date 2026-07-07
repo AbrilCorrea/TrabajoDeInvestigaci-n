@@ -32,6 +32,9 @@ public class KeyPad : MonoBehaviour
 
         if (doorInteraction != null)
             doorInteraction.enabled = false;
+
+        GameMetrics.Instance.StartNeutralTimer();
+    
     }
     private void Update()
     {
@@ -83,13 +86,34 @@ public class KeyPad : MonoBehaviour
         if (text.text == answer)
         {
             text.text = "Correct";
-            doorInteraction.enabled = true;
-            hasUnlocked = true;  
+
+            if (GameMetrics.Instance != null)
+            {
+                GameMetrics.Instance.FinishNeutral();
+
+                Debug.Log("Sala Neutral");
+                Debug.Log("Tiempo: " + GameMetrics.Instance.neutralTime);
+                Debug.Log("Errores: " + GameMetrics.Instance.neutralErrors);
+            }
+
+            if (doorInteraction != null)
+            {
+                doorInteraction.enabled = true;
+            }
+            else
+            {
+                Debug.LogWarning("No hay puerta asignada en KeyPad");
+            }
+
+            hasUnlocked = true;
             CloseCanvas();
         }
         else
         {
             text.text = "Incorrect";
+
+            if (GameMetrics.Instance != null)
+                GameMetrics.Instance.AddNeutralError();
         }
     }
     public void Delete()
