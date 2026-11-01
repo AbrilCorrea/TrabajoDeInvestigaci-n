@@ -23,7 +23,7 @@ public class KeyPad2 : MonoBehaviour
     private bool hasUnlocked = false;
 
     internal bool canUseKeypad = false;
-
+    private bool blockPlayer = false;
 
     private void Start()
     {
@@ -32,6 +32,13 @@ public class KeyPad2 : MonoBehaviour
             interactUI.alpha = 0f;
             interactUI.interactable = false;
             interactUI.blocksRaycasts = false;
+        }
+    }
+    private void LateUpdate()
+    {
+        if (blockPlayer && playerController != null)
+        {
+            playerController.canMove = false;
         }
     }
     void Update()
@@ -53,13 +60,13 @@ public class KeyPad2 : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 isCanvasOpen = !isCanvasOpen;
-
                 if (isCanvasOpen)
                 {
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
                     canvas.gameObject.SetActive(true);
 
+                    blockPlayer = true;
                 }
                 else
                 {
@@ -106,10 +113,16 @@ public class KeyPad2 : MonoBehaviour
     private void CloseCanvas()
     {
         canvas.gameObject.SetActive(false);
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        isCanvasOpen = false;
 
+        blockPlayer = false;
+
+        if (playerController != null)
+            playerController.canMove = true;
+
+        isCanvasOpen = false;
     }
 
     void FadeUI(bool fadeIn)

@@ -10,6 +10,9 @@ public class FirstPersonController : MonoBehaviour
     private CharacterController controller;
     private float xRotation;
 
+    public bool canMove = true;
+    private bool wasLocked = false;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -20,10 +23,24 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
+        if (!canMove)
+        {
+            Input.GetAxis("Mouse X");
+            Input.GetAxis("Mouse Y");
+
+            wasLocked = true;
+            return;
+        }
+
+        if (wasLocked)
+        {
+            wasLocked = false;
+            return;
+        }
+
         Move();
         Look();
     }
-
     void Move()
     {
         float x = Input.GetAxisRaw("Horizontal");

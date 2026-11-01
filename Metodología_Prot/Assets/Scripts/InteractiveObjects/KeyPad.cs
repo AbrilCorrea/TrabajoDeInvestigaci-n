@@ -21,6 +21,8 @@ public class KeyPad : MonoBehaviour
     private bool isCanvasOpen = false;
     private bool hasUnlocked = false;
 
+    private bool blockPlayer = false;
+
     private void Start()
     {
         if (interactUI != null)
@@ -35,6 +37,13 @@ public class KeyPad : MonoBehaviour
 
         GameMetrics.Instance.StartNeutralTimer();
     
+    }
+    private void LateUpdate()
+    {
+        if (blockPlayer && playerController != null)
+        {
+            playerController.canMove = false;
+        }
     }
     private void Update()
     {
@@ -59,6 +68,7 @@ public class KeyPad : MonoBehaviour
                     Cursor.lockState = CursorLockMode.None;
                     canvas.gameObject.SetActive(true);
 
+                    blockPlayer = true;
                 }
                 else
                 {
@@ -123,12 +133,17 @@ public class KeyPad : MonoBehaviour
     private void CloseCanvas()
     {
         canvas.gameObject.SetActive(false);
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        blockPlayer = false;
+
+        if (playerController != null)
+            playerController.canMove = true;
+
         isCanvasOpen = false;
-
     }
-
     void FadeUI(bool fadeIn)
     {
         StopAllCoroutines();
