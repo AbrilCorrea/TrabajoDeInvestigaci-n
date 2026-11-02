@@ -25,9 +25,6 @@ public class FirstPersonController : MonoBehaviour
     {
         if (!canMove)
         {
-            Input.GetAxis("Mouse X");
-            Input.GetAxis("Mouse Y");
-
             wasLocked = true;
             return;
         }

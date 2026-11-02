@@ -56,7 +56,6 @@ public class KeyPad : MonoBehaviour
             if (!isNear)
             {
                 isNear = true;
-                //FadeUI(true);
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -64,11 +63,15 @@ public class KeyPad : MonoBehaviour
 
                 if (isCanvasOpen)
                 {
-                    Cursor.visible = true;
-                    Cursor.lockState = CursorLockMode.None;
+                    blockPlayer = true;
+
+                    if (playerController != null)
+                        playerController.canMove = false;
+
                     canvas.gameObject.SetActive(true);
 
-                    blockPlayer = true;
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
                 }
                 else
                 {
@@ -81,7 +84,6 @@ public class KeyPad : MonoBehaviour
             if (isNear)
             {
                 isNear = false;
-                //FadeUI(false);
                 CloseCanvas();
             }
         }
@@ -134,47 +136,16 @@ public class KeyPad : MonoBehaviour
     {
         canvas.gameObject.SetActive(false);
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
         blockPlayer = false;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         if (playerController != null)
             playerController.canMove = true;
 
         isCanvasOpen = false;
     }
-    //void FadeUI(bool fadeIn)
-    //{
-    //    StopAllCoroutines();
-    //    //StartCoroutine(FadeCoroutine(fadeIn));
-    //}
-
-    //System.Collections.IEnumerator FadeCoroutine(bool fadeIn)
-    //{
-    //    float duration = 0.3f;
-    //    float startAlpha = interactUI.alpha;
-    //    float endAlpha = fadeIn ? 1f : 0f;
-    //    float elapsed = 0f;
-
-    //    while (elapsed < duration)
-    //    {
-    //        elapsed += Time.deltaTime;
-    //        interactUI.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
-    //        yield return null;
-    //    }
-
-    //    interactUI.alpha = endAlpha;
-    //    interactUI.interactable = fadeIn;
-    //    interactUI.blocksRaycasts = fadeIn;
-    //    if (!fadeIn)
-    //    {
-    //        text.text = ""; 
-    //        interactUI.interactable = false;
-    //        interactUI.blocksRaycasts = false;
-    //    }
-    //}
-
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

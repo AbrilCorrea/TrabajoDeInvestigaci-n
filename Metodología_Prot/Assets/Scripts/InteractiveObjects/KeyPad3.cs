@@ -55,11 +55,15 @@ public class KeyPad3 : MonoBehaviour
                 isCanvasOpen = !isCanvasOpen;
                 if (isCanvasOpen)
                 {
-                    Cursor.visible = true;
-                    Cursor.lockState = CursorLockMode.None;
+                    blockPlayer = true;
+
+                    if (playerController != null)
+                        playerController.canMove = false;
+
                     canvas.gameObject.SetActive(true);
 
-                    blockPlayer = true;
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
                 }
                 else
                 {
@@ -121,10 +125,10 @@ public class KeyPad3 : MonoBehaviour
     {
         canvas.gameObject.SetActive(false);
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
         blockPlayer = false;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         if (playerController != null)
             playerController.canMove = true;
