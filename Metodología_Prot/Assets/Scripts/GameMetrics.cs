@@ -111,7 +111,7 @@ public class GameMetrics : MonoBehaviour
         string json = JsonUtility.ToJson(
             new MetricData
             {
-                id = "P001",
+                id = PlayerPrefs.GetString("PlayerAlias", "Anonymous"),
                 room = room,
                 time = time,
                 errors = errors,
