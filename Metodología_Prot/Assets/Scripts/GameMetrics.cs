@@ -14,6 +14,9 @@ public class GameMetrics : MonoBehaviour
     public float spiderTime;
     public int spiderErrors;
 
+    public float trypophobiaTime;
+    public int trypophobiaErrors;
+
     [SerializeField]
     private string googleScriptURL;
 
@@ -62,6 +65,21 @@ public class GameMetrics : MonoBehaviour
             spiderErrors
         );
     }
+    public void FinishTrypophobia()
+    {
+        trypophobiaTime = Time.time - startTime;
+
+        SendMetrics(
+            "Trypophobia",
+            trypophobiaTime,
+            trypophobiaErrors
+        );
+    }
+
+    public void AddTrypophobiaError()
+    {
+        trypophobiaErrors++;
+    }
 
     public void AddNeutralError()
     {
@@ -98,26 +116,27 @@ public class GameMetrics : MonoBehaviour
                 time = time,
                 errors = errors,
             }
- );
-        Debug.Log("JSON ENVIADO: " + json);
+        );
+
         using (UnityWebRequest request =
-               new UnityWebRequest(
-                   googleScriptURL,
-                   "POST"))
-        {
+
+            new UnityWebRequest(
+                 googleScriptURL,
+                 "POST"))
+            {
             byte[] body =
-                System.Text.Encoding.UTF8.GetBytes(json);
+            System.Text.Encoding.UTF8.GetBytes(json);
 
             request.uploadHandler =
-                new UploadHandlerRaw(body);
+            new UploadHandlerRaw(body);
 
             request.downloadHandler =
-                new DownloadHandlerBuffer();
+            new DownloadHandlerBuffer();
 
             request.SetRequestHeader(
-                "Content-Type",
-                "application/json"
-            );
+                 "Content-Type",
+                 "application/json"
+            );   
 
             yield return request.SendWebRequest();
 

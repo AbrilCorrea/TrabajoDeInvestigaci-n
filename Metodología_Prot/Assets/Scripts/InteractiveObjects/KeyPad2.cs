@@ -33,6 +33,8 @@ public class KeyPad2 : MonoBehaviour
             interactUI.interactable = false;
             interactUI.blocksRaycasts = false;
         }
+
+        GameMetrics.Instance.StartTimer();
     }
     private void LateUpdate()
     {
@@ -55,7 +57,7 @@ public class KeyPad2 : MonoBehaviour
             if (!isNear)
             {
                 isNear = true;
-                FadeUI(true);
+                //FadeUI(true);
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -79,7 +81,7 @@ public class KeyPad2 : MonoBehaviour
             if (isNear)
             {
                 isNear = false;
-                FadeUI(false);
+                //FadeUI(false);
                 CloseCanvas();
             }
         }
@@ -95,6 +97,16 @@ public class KeyPad2 : MonoBehaviour
         {
             text2.text = "Correct";
             text.text = "";
+
+            if (GameMetrics.Instance != null)
+            {
+                GameMetrics.Instance.FinishSpider();
+
+                Debug.Log("Sala Arachnophobia");
+                Debug.Log("Tiempo: " + GameMetrics.Instance.spiderTime);
+                Debug.Log("Errores: " + GameMetrics.Instance.spiderErrors);
+            }
+
             doorInteraction.canInteract = true;
             hasUnlocked = true;
             CloseCanvas();
@@ -103,6 +115,11 @@ public class KeyPad2 : MonoBehaviour
         {
             text2.text = "Incorrect";
             text.text = "";
+
+            if (GameMetrics.Instance != null)
+            {
+                GameMetrics.Instance.AddSpiderError();
+            }
         }
     }
     public void Delete()
@@ -125,36 +142,36 @@ public class KeyPad2 : MonoBehaviour
         isCanvasOpen = false;
     }
 
-    void FadeUI(bool fadeIn)
-    {
-        StopAllCoroutines();
-        //StartCoroutine(FadeCoroutine(fadeIn));
-    }
+    //void FadeUI(bool fadeIn)
+    //{
+    //    StopAllCoroutines();
+    //    StartCoroutine(FadeCoroutine(fadeIn));
+    //}
 
-    System.Collections.IEnumerator FadeCoroutine(bool fadeIn)
-    {
-        float duration = 0.3f;
-        float startAlpha = interactUI.alpha;
-        float endAlpha = fadeIn ? 1f : 0f;
-        float elapsed = 0f;
+    //System.Collections.IEnumerator FadeCoroutine(bool fadeIn)
+    //{
+    //    float duration = 0.3f;
+    //    float startAlpha = interactUI.alpha;
+    //    float endAlpha = fadeIn ? 1f : 0f;
+    //    float elapsed = 0f;
 
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            interactUI.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
-            yield return null;
-        }
+    //    while (elapsed < duration)
+    //    {
+    //        elapsed += Time.deltaTime;
+    //        interactUI.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
+    //        yield return null;
+    //    }
 
-        interactUI.alpha = endAlpha;
-        interactUI.interactable = fadeIn;
-        interactUI.blocksRaycasts = fadeIn;
-        if (!fadeIn)
-        {
-            text.text = "";
-            interactUI.interactable = false;
-            interactUI.blocksRaycasts = false;
-        }
-    }
+    //    interactUI.alpha = endAlpha;
+    //    interactUI.interactable = fadeIn;
+    //    interactUI.blocksRaycasts = fadeIn;
+    //    if (!fadeIn)
+    //    {
+    //        text.text = "";
+    //        interactUI.interactable = false;
+    //        interactUI.blocksRaycasts = false;
+    //    }
+    //}
 
     void OnDrawGizmosSelected()
     {

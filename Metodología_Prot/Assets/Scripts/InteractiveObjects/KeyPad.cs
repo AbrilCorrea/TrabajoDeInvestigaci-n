@@ -56,7 +56,7 @@ public class KeyPad : MonoBehaviour
             if (!isNear)
             {
                 isNear = true;
-                FadeUI(true);
+                //FadeUI(true);
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -81,7 +81,7 @@ public class KeyPad : MonoBehaviour
             if (isNear)
             {
                 isNear = false;
-                FadeUI(false);
+                //FadeUI(false);
                 CloseCanvas();
             }
         }
@@ -144,36 +144,36 @@ public class KeyPad : MonoBehaviour
 
         isCanvasOpen = false;
     }
-    void FadeUI(bool fadeIn)
-    {
-        StopAllCoroutines();
-        //StartCoroutine(FadeCoroutine(fadeIn));
-    }
+    //void FadeUI(bool fadeIn)
+    //{
+    //    StopAllCoroutines();
+    //    //StartCoroutine(FadeCoroutine(fadeIn));
+    //}
 
-    System.Collections.IEnumerator FadeCoroutine(bool fadeIn)
-    {
-        float duration = 0.3f;
-        float startAlpha = interactUI.alpha;
-        float endAlpha = fadeIn ? 1f : 0f;
-        float elapsed = 0f;
+    //System.Collections.IEnumerator FadeCoroutine(bool fadeIn)
+    //{
+    //    float duration = 0.3f;
+    //    float startAlpha = interactUI.alpha;
+    //    float endAlpha = fadeIn ? 1f : 0f;
+    //    float elapsed = 0f;
 
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            interactUI.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
-            yield return null;
-        }
+    //    while (elapsed < duration)
+    //    {
+    //        elapsed += Time.deltaTime;
+    //        interactUI.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
+    //        yield return null;
+    //    }
 
-        interactUI.alpha = endAlpha;
-        interactUI.interactable = fadeIn;
-        interactUI.blocksRaycasts = fadeIn;
-        if (!fadeIn)
-        {
-            text.text = ""; 
-            interactUI.interactable = false;
-            interactUI.blocksRaycasts = false;
-        }
-    }
+    //    interactUI.alpha = endAlpha;
+    //    interactUI.interactable = fadeIn;
+    //    interactUI.blocksRaycasts = fadeIn;
+    //    if (!fadeIn)
+    //    {
+    //        text.text = ""; 
+    //        interactUI.interactable = false;
+    //        interactUI.blocksRaycasts = false;
+    //    }
+    //}
 
     void OnDrawGizmosSelected()
     {
