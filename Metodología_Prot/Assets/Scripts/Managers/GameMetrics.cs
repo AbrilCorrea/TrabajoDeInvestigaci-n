@@ -109,13 +109,17 @@ public class GameMetrics : MonoBehaviour
         int errors)
     {
         string json = JsonUtility.ToJson(
-            new MetricData
-            {
-                id = PlayerPrefs.GetString("PlayerAlias", "Anonymous"),
-                room = room,
-                time = time,
-                errors = errors,
-            }
+           new MetricData
+           {
+               id = PlayerPrefs.GetString("PlayerAlias", "Anonymous"),
+               room = room,
+               time = time,
+               errors = errors,
+
+               tripofobia = PlayerPrefs.GetInt("Tripofobia", 0),
+               claustrofobia = PlayerPrefs.GetInt("Claustrofobia", 0),
+               aracnofobia = PlayerPrefs.GetInt("Aracnofobia", 0)
+           }
         );
 
         using (UnityWebRequest request =
@@ -162,6 +166,10 @@ public class GameMetrics : MonoBehaviour
         public string room;
         public float time;
         public int errors;
+
+        public int tripofobia;
+        public int claustrofobia;
+        public int aracnofobia;
     }
 
 }
