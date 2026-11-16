@@ -47,7 +47,11 @@ public class KeyPad : MonoBehaviour
     }
     private void Update()
     {
-        if (hasUnlocked) return; 
+        if (hasUnlocked)
+        {
+            ShowInteractUI(false);
+            return;
+        }
 
         float distance = Vector3.Distance(player.position, transform.position);
 
@@ -56,7 +60,9 @@ public class KeyPad : MonoBehaviour
             if (!isNear)
             {
                 isNear = true;
+                ShowInteractUI(true);
             }
+
             if (Input.GetKeyDown(KeyCode.E))
             {
                 isCanvasOpen = !isCanvasOpen;
@@ -84,12 +90,18 @@ public class KeyPad : MonoBehaviour
             if (isNear)
             {
                 isNear = false;
+                ShowInteractUI(false);
                 CloseCanvas();
             }
         }
     }
     public void Number(int number)
     {
+        if (text.text == "Incorrecto" || text.text == "Correcto")
+        {
+            text.text = "";
+        }
+
         text.text += number.ToString();
     }
 
@@ -97,7 +109,7 @@ public class KeyPad : MonoBehaviour
     {
         if (text.text == answer)
         {
-            text.text = "Correct";
+            text.text = "Correcto";
 
             if (GameMetrics.Instance != null)
             {
@@ -122,7 +134,7 @@ public class KeyPad : MonoBehaviour
         }
         else
         {
-            text.text = "Incorrect";
+            text.text = "Incorrecto";
 
             if (GameMetrics.Instance != null)
                 GameMetrics.Instance.AddNeutralError();
@@ -145,6 +157,16 @@ public class KeyPad : MonoBehaviour
             playerController.canMove = true;
 
         isCanvasOpen = false;
+        ShowInteractUI(isNear && !hasUnlocked);
+    }
+    private void ShowInteractUI(bool show)
+    {
+        if (interactUI != null)
+        {
+            interactUI.alpha = show ? 1f : 0f;
+            interactUI.interactable = show;
+            interactUI.blocksRaycasts = show;
+        }
     }
     void OnDrawGizmosSelected()
     {

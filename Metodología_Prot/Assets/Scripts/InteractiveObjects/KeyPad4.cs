@@ -15,6 +15,7 @@ public class KeyPad4 : MonoBehaviour
     private bool isNear = false;
     public float interactDistance = 3f;
     public Transform player;
+    public CanvasGroup interactUI;
 
     public GameObject canvas;
     private bool isCanvasOpen = false;
@@ -22,6 +23,8 @@ public class KeyPad4 : MonoBehaviour
 
     internal bool canUseKeypad = false;
     private bool blockPlayer = false;
+
+    public DoorsElevator elevatorDoors;
 
     private void Start()
     {
@@ -40,7 +43,11 @@ public class KeyPad4 : MonoBehaviour
         if (!canUseKeypad)
             return;
 
-        if (hasUnlocked) return;
+        if (hasUnlocked)
+        {
+            ShowInteractUI(false);
+            return;
+        }
 
         float distance = Vector3.Distance(player.position, transform.position);
 
@@ -49,6 +56,7 @@ public class KeyPad4 : MonoBehaviour
             if (!isNear)
             {
                 isNear = true;
+                ShowInteractUI(true);
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -76,43 +84,45 @@ public class KeyPad4 : MonoBehaviour
             if (isNear)
             {
                 isNear = false;
+                ShowInteractUI(false);
                 CloseCanvas();
             }
         }
     }
-    public void Number(string number)
+    public void Letter(string letter)
     {
-        text.text += number.ToString();
+        text2.text = "";
+        text.text += letter;
     }
 
     public void Enter()
     {
         if (text.text == answer)
         {
-            text2.text = "Correct";
+            text2.text = "Correcto";
             text.text = "";
 
             if (GameMetrics.Instance != null)
             {
-                GameMetrics.Instance.FinishTrypophobia();
+                GameMetrics.Instance.FinishClaustrophobia();
 
-                Debug.Log("Sala Tripofobia");
-                Debug.Log("Tiempo: " + GameMetrics.Instance.trypophobiaTime);
-                Debug.Log("Errores: " + GameMetrics.Instance.trypophobiaErrors);
+                Debug.Log("Sala Claustrofobia");
+                Debug.Log("Tiempo: " + GameMetrics.Instance.claustrophobiaTime);
+                Debug.Log("Errores: " + GameMetrics.Instance.claustrophobiaErrors);
             }
-
+            elevatorDoors.OpenDoors();
             doorInteraction.canInteract = true;
             hasUnlocked = true;
             CloseCanvas();
         }
         else
         {
-            text2.text = "Incorrect";
+            text2.text = "Incorrecto";
             text.text = "";
 
             if (GameMetrics.Instance != null)
             {
-                GameMetrics.Instance.AddTrypophobiaError();
+                GameMetrics.Instance.AddClaustrophobiaError();
             }
         }
     }
@@ -134,8 +144,17 @@ public class KeyPad4 : MonoBehaviour
             playerController.canMove = true;
 
         isCanvasOpen = false;
+        ShowInteractUI(isNear && !hasUnlocked);
     }
-
+    private void ShowInteractUI(bool show)
+    {
+        if (interactUI != null)
+        {
+            interactUI.alpha = show ? 1f : 0f;
+            interactUI.interactable = show;
+            interactUI.blocksRaycasts = show;
+        }
+    }
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

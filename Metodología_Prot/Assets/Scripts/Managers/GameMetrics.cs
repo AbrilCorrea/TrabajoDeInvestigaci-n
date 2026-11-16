@@ -17,6 +17,9 @@ public class GameMetrics : MonoBehaviour
     public float trypophobiaTime;
     public int trypophobiaErrors;
 
+    public float claustrophobiaTime;
+    public int claustrophobiaErrors;
+
     [SerializeField]
     private string googleScriptURL;
 
@@ -89,6 +92,21 @@ public class GameMetrics : MonoBehaviour
     public void AddSpiderError()
     {
         spiderErrors++;
+    }
+    public void FinishClaustrophobia()
+    {
+        claustrophobiaTime = Time.time - startTime;
+
+        SendMetrics(
+            "Claustrophobia",
+            claustrophobiaTime,
+            claustrophobiaErrors
+        );
+    }
+
+    public void AddClaustrophobiaError()
+    {
+        claustrophobiaErrors++;
     }
 
     private void SendMetrics(

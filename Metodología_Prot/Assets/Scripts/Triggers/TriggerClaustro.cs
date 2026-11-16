@@ -6,6 +6,8 @@ public class TriggerClaustro : MonoBehaviour
 {
     public InteractiveDoor door;
     public KeyPad4 keypad;
+    public RoomClaustro roomClaustro;
+    public DoorsElevator elevatorDoors;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,6 +19,14 @@ public class TriggerClaustro : MonoBehaviour
         door.CloseDoorExternally();
         door.canInteract = false;
 
+        if (elevatorDoors != null)
+        {
+            elevatorDoors.CloseDoors();
+        }
+      
+
+        roomClaustro.CloseRoom();
+
         gameObject.SetActive(false);
     }
-}
+} 

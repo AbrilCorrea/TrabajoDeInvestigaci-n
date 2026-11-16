@@ -15,6 +15,7 @@ public class KeyPad3 : MonoBehaviour
     private bool isNear = false;
     public float interactDistance = 3f;
     public Transform player;
+    public CanvasGroup interactUI;
 
     public GameObject canvas;
     private bool isCanvasOpen = false;
@@ -40,7 +41,12 @@ public class KeyPad3 : MonoBehaviour
         if (!canUseKeypad)
             return;
 
-        if (hasUnlocked) return;
+
+        if (hasUnlocked)
+        {
+            ShowInteractUI(false);
+            return;
+        }
 
         float distance = Vector3.Distance(player.position, transform.position);
 
@@ -49,6 +55,7 @@ public class KeyPad3 : MonoBehaviour
             if (!isNear)
             {
                 isNear = true;
+                ShowInteractUI(true);
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -76,20 +83,21 @@ public class KeyPad3 : MonoBehaviour
             if (isNear)
             {
                 isNear = false;
+                ShowInteractUI(false);
                 CloseCanvas();
             }
         }
     }
-    public void Number(string number)
+    public void Number(int number)
     {
+        text2.text = "";
         text.text += number.ToString();
     }
-
     public void Enter()
     {
         if (text.text == answer)
         {
-            text2.text = "Correct";
+            text2.text = "Correcto";
             text.text = "";
 
             if (GameMetrics.Instance != null)
@@ -107,7 +115,7 @@ public class KeyPad3 : MonoBehaviour
         }
         else
         {
-            text2.text = "Incorrect";
+            text2.text = "Incorrecto";
             text.text = "";
 
             if (GameMetrics.Instance != null)
@@ -116,6 +124,7 @@ public class KeyPad3 : MonoBehaviour
             }
         }
     }
+
     public void Delete()
     {
         text.text = "";
@@ -134,6 +143,16 @@ public class KeyPad3 : MonoBehaviour
             playerController.canMove = true;
 
         isCanvasOpen = false;
+        ShowInteractUI(isNear && !hasUnlocked);
+    }
+    private void ShowInteractUI(bool show)
+    {
+        if (interactUI != null)
+        {
+            interactUI.alpha = show ? 1f : 0f;
+            interactUI.interactable = show;
+            interactUI.blocksRaycasts = show;
+        }
     }
 
     void OnDrawGizmosSelected()

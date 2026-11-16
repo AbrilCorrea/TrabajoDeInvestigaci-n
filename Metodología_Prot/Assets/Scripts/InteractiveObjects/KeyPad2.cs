@@ -40,8 +40,11 @@ public class KeyPad2 : MonoBehaviour
         if (!canUseKeypad)
             return;
 
-        if (hasUnlocked) return;
-
+        if (hasUnlocked)
+        {
+            ShowInteractUI(false);
+            return;
+        }
         float distance = Vector3.Distance(player.position, transform.position);
 
         if (distance <= interactDistance)
@@ -49,6 +52,7 @@ public class KeyPad2 : MonoBehaviour
             if (!isNear)
             {
                 isNear = true;
+                ShowInteractUI(true);
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -76,20 +80,21 @@ public class KeyPad2 : MonoBehaviour
             if (isNear)
             {
                 isNear = false;
+                ShowInteractUI(false);
                 CloseCanvas();
             }
         }
     }
-    public void Number(string number)
+    public void Letter(string letter)
     {
-        text.text += number.ToString();
+        text2.text = "";
+        text.text += letter;
     }
-
     public void Enter()
     {
         if (text.text == answer)
         {
-            text2.text = "Correct";
+            text2.text = "Correcto";
             text.text = "";
 
             if (GameMetrics.Instance != null)
@@ -107,7 +112,7 @@ public class KeyPad2 : MonoBehaviour
         }
         else
         {
-            text2.text = "Incorrect";
+            text2.text = "Incorrecto";
             text.text = "";
 
             if (GameMetrics.Instance != null)
@@ -134,6 +139,16 @@ public class KeyPad2 : MonoBehaviour
             playerController.canMove = true;
 
         isCanvasOpen = false;
+        ShowInteractUI(isNear && !hasUnlocked);
+    }
+    private void ShowInteractUI(bool show)
+    {
+        if (interactUI != null)
+        {
+            interactUI.alpha = show ? 1f : 0f;
+            interactUI.interactable = show;
+            interactUI.blocksRaycasts = show;
+        }
     }
 
     void OnDrawGizmosSelected()
