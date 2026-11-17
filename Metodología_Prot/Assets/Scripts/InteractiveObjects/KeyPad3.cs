@@ -112,6 +112,7 @@ public class KeyPad3 : MonoBehaviour
             doorInteraction.canInteract = true;
             hasUnlocked = true;
             CloseCanvas();
+            FindObjectOfType<MagerEnd>().CompleteRoom();
         }
         else
         {

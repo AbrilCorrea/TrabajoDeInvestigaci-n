@@ -131,6 +131,7 @@ public class KeyPad : MonoBehaviour
 
             hasUnlocked = true;
             CloseCanvas();
+            FindObjectOfType<MagerEnd>().CompleteRoom();
         }
         else
         {

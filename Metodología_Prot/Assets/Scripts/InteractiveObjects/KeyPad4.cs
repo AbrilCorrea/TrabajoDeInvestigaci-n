@@ -114,6 +114,7 @@ public class KeyPad4 : MonoBehaviour
             doorInteraction.canInteract = true;
             hasUnlocked = true;
             CloseCanvas();
+            FindObjectOfType<MagerEnd>().CompleteRoom();
         }
         else
         {
